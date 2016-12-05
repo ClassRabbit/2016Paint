@@ -1,5 +1,7 @@
 package utils;
 
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
@@ -38,7 +40,24 @@ public class GEAnchorList {
 		anchors.get(EAnchorTypes.SS.ordinal()).setFrame(x+w/2-dx, y+h-dy, GEConstants.ANCHOR_W, GEConstants.ANCHOR_H);
 		anchors.get(EAnchorTypes.SE.ordinal()).setFrame(x+w-dx, y+h-dy, GEConstants.ANCHOR_W, GEConstants.ANCHOR_H);
 		anchors.get(EAnchorTypes.RR.ordinal()).setFrame(x+w/2-dx, y-GEConstants.RR_OFFSET, GEConstants.ANCHOR_W, GEConstants.ANCHOR_H);
-	
 	}
 	
+	public EAnchorTypes onAnchors(Point p){
+		for(Ellipse2D ellipse : anchors){
+			if(ellipse.contains(p)){
+				return EAnchorTypes.values()[anchors.indexOf(ellipse)];
+			}
+		}
+		return EAnchorTypes.NONE;
+	}
+	
+	public void draw(Graphics2D g2d){
+		for(int i=0;i<EAnchorTypes.values().length-1;i++){
+			Ellipse2D.Double ellipse = anchors.get(i);
+			g2d.setColor(GEConstants.ANCHOR_FILLCOLOR);
+			g2d.fill(ellipse);
+			g2d.setColor(GEConstants.ANCHOR_LINECOLOR);
+			g2d.draw(ellipse);
+		}
+	}
 }
