@@ -10,6 +10,7 @@ import menus.GEMenuBar;
 public class GEMainFrame extends JFrame {
 	private GEDrawingPanel drawingPanel;
 	private GEMenuBar menuBar;
+	private GEToolBar toolBar;
 	
 	private static GEMainFrame uniqueFrame = new GEMainFrame(GEConstants.TITLE_MAINFRAME);
 	
@@ -19,6 +20,8 @@ public class GEMainFrame extends JFrame {
 		add(drawingPanel);
 		menuBar = new GEMenuBar();
 		this.setJMenuBar(menuBar);
+		toolBar = new GEToolBar(GEConstants.TITLE_TOOLBAR);
+		this.add(BorderLayout.NORTH, toolBar);
 	}
 	
 	public static GEMainFrame getInstance() {
