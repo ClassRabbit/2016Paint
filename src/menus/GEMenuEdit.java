@@ -9,9 +9,9 @@ public class GEMenuEdit extends JMenu{
 	public GEMenuEdit(String label) {
 		super(label);
 		JMenuItem item;
-		for(EEditMenuItems menu : EEditMenuItems.values()){
-			item = new JMenuItem(menu.toString());
-			this.add(item);
+		for(EEditMenuItems btn : EEditMenuItems.values()){
+			item = new JMenuItem(btn.toString());
+			add(item);
 		}
 	}
 }

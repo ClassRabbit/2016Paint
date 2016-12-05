@@ -10,9 +10,10 @@ public class GEMenuFile extends JMenu{
 
 	public GEMenuFile(String label){
 		super(label);
-		for(EFileMenuItems item : EFileMenuItems.values() ){
-			JMenuItem menuItem = new JMenuItem(item.toString());
-			this.add(menuItem);
+		JMenuItem item;
+		for(EFileMenuItems btn : EFileMenuItems.values() ){
+			item = new JMenuItem(btn.toString());
+			add(item);
 		}
 	}
 }
