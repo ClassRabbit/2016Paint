@@ -44,6 +44,11 @@ public abstract class GEShape {
 		return shape.getBounds();
 	}
 	
+	public EAnchorTypes onAnchor(Point p){
+		selectedAnchor = anchorList.onAnchors(p);
+		return selectedAnchor;
+	}
+	
 	public void setLineColor(Color lineColor) {
 		this.lineColor = lineColor;
 	}
