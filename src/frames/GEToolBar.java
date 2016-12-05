@@ -1,5 +1,8 @@
 package frames;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JRadioButton;
@@ -7,10 +10,15 @@ import javax.swing.JToolBar;
 
 import constants.GEConstants;
 import constants.GEConstants.EToolBarButtons;
+import shapes.GEEllipse;
+import shapes.GELine;
+import shapes.GEPolygon;
+import shapes.GERectangle;
 
 public class GEToolBar extends JToolBar{
 	
 	private ButtonGroup buttonGroup;
+	private GEDrawingPanel drawingPanel;
 	
 	public GEToolBar(String label) {
 		super(label);
@@ -23,5 +31,35 @@ public class GEToolBar extends JToolBar{
 			this.add(rButton);
 			buttonGroup.add(rButton);
 		}
+	}
+	
+	public void init(GEDrawingPanel drawingPanel){
+		this.drawingPanel = drawingPanel;
+		this.clickDefault();
+	}
+	
+	private void clickDefault(){
+		JRadioButton rButton = (JRadioButton)this.getComponent(EToolBarButtons.Rectangle.ordinal());
+		rButton.doClick();
+	}
+	
+	private class ToolBarHandler implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JRadioButton rButton = (JRadioButton)e.getSource();
+			if(rButton.getActionCommand().equals(EToolBarButtons.Rectangle.toString())){
+				drawingPanel.setCurrentShape(new GERectangle());
+			}else if(rButton.getActionCommand().equals(EToolBarButtons.Ellipse.toString())){
+				drawingPanel.setCurrentShape(new GEEllipse());
+			}else if(rButton.getActionCommand().equals(EToolBarButtons.Line.toString())){
+				drawingPanel.setCurrentShape(new GELine());
+			}else if(rButton.getActionCommand().equals(EToolBarButtons.Polygon.toString())){
+				drawingPanel.setCurrentShape(new GEPolygon());
+			}else if(rButton.getActionCommand().equals(EToolBarButtons.Select.toString())){
+				drawingPanel.setCurrentShape(null);
+			}
+		}
+		
 	}
 }

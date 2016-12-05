@@ -1,22 +1,35 @@
 package frames;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import constants.GEConstants;
+import constants.GEConstants.EState;
+import frames.GEDrawingPanel.MouseDrawingHandler;
 import shapes.GERectangle;
+import shapes.GEShape;
+import transformer.GETransformer;
+import utils.GECursorManager;
 
 public class GEDrawingPanel extends JPanel{
-	private GERectangle rectangle;
-	private DrawingHandler drawingHandler;
+	
+	private GEShape currentShape, selectedShape;
+	private EState currentState;
+	private ArrayList<GEShape> shapeList;
+	private GETransformer transformer;
+	private Color fillColor, lineColor;
+	private MouseDrawingHandler drawingHandler;
+	private GECursorManager cursorManager;
 	
 	public GEDrawingPanel() {
-		drawingHandler = new DrawingHandler();
+		drawingHandler = new MouseDrawingHandler();
 		this.addMouseListener(drawingHandler);
 		this.addMouseMotionListener(drawingHandler);
 		this.setBackground(GEConstants.BACKGROUND_COLOR);
@@ -37,7 +50,7 @@ public class GEDrawingPanel extends JPanel{
 		g2d.draw(rectangle.getRectangle());
 	}
 	
-	private class DrawingHandler extends MouseAdapter{
+	private class MouseDrawingHandler extends MouseAdapter{
 		@Override
 		public void mouseDragged(MouseEvent e){
 			animateDraw(e.getPoint());
