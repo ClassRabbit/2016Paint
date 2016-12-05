@@ -1,21 +1,23 @@
 package shapes;
 
 import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
 
-public class GERectangle extends GEShape{
-	public GERectangle() {
-		super(new Rectangle());
+public class GEEllipse extends GEShape{
+	
+	public GEEllipse() {
+		super(new Ellipse2D.Double());
 	}
 
 	@Override
 	public void initDraw(Point startP) {
 		this.startP = startP;
 	}
+
 	@Override
 	public void setCoordinate(Point currentP) {
-		Rectangle rectangle = (Rectangle)shape;
-		rectangle.setBounds(startP.x, startP.y, currentP.x-startP.x, currentP.y-startP.y);
+		Ellipse2D ellipse = (Ellipse2D)shape;
+		ellipse.setFrame(startP.x, startP.y, currentP.x-startP.x, currentP.y-startP.y);
 		if(anchorList != null){
 			anchorList.setPosition(shape.getBounds());
 		}
@@ -23,6 +25,7 @@ public class GERectangle extends GEShape{
 
 	@Override
 	public GEShape clone() {
-		return new GERectangle();
+		return new GEEllipse();
 	}
+
 }

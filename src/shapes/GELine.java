@@ -1,21 +1,25 @@
 package shapes;
 
 import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
-public class GERectangle extends GEShape{
-	public GERectangle() {
-		super(new Rectangle());
+public class GELine extends GEShape{
+	
+	public GELine() {
+		super(new Line2D.Double());
 	}
 
 	@Override
 	public void initDraw(Point startP) {
 		this.startP = startP;
 	}
+
 	@Override
 	public void setCoordinate(Point currentP) {
-		Rectangle rectangle = (Rectangle)shape;
-		rectangle.setBounds(startP.x, startP.y, currentP.x-startP.x, currentP.y-startP.y);
+		Line2D line = (Line2D)shape;
+		line.setLine(startP.x, startP.y, currentP.x, currentP.y);
 		if(anchorList != null){
 			anchorList.setPosition(shape.getBounds());
 		}
@@ -23,6 +27,7 @@ public class GERectangle extends GEShape{
 
 	@Override
 	public GEShape clone() {
-		return new GERectangle();
+		return new GELine();
 	}
+
 }
