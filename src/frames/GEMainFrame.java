@@ -29,6 +29,7 @@ public class GEMainFrame extends JFrame {
 	}
 	
 	public void init(){
+		menuBar.init(drawingPanel);
 		this.setSize(GEConstants.WIDTH_MAINFRAME, GEConstants.HEIGHT_MAINFRAME);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
