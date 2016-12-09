@@ -169,9 +169,13 @@ public class GEDrawingPanel extends JPanel{
 	
 	//paste
 	public void paste(){
-		for(GEShape shape: clipboard.paste()){ //붙이려고 하는 도형.
-			shapeList.add(shape.deepCopy());
+		ArrayList<GEShape> pasteShapes = clipboard.paste();
+		for(int i=pasteShapes.size()-1; i>=0; i--){
+			shapeList.add(pasteShapes.get(i).deepCopy());
 		}
+//		for(GEShape shape: clipboard.paste()){ //붙이려고 하는 도형.
+//			shapeList.add(shape.deepCopy());
+//		}
 		history.push(shapeList);
 		repaint();
 	}
