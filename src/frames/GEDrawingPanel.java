@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import constants.GEConstants;
 import constants.GEConstants.EAnchorTypes;
 import constants.GEConstants.EState;
+import shapes.GEGroup;
 import shapes.GEPolygon;
 import shapes.GERectangle;
 import shapes.GESelect;
@@ -25,7 +26,9 @@ import transformer.GEMover;
 import transformer.GEResizer;
 import transformer.GERotater;
 import transformer.GETransformer;
+import utils.GEClipBoard;
 import utils.GECursorManager;
+import utils.GEStack;
 
 public class GEDrawingPanel extends JPanel{
 	
@@ -37,6 +40,9 @@ public class GEDrawingPanel extends JPanel{
 	private MouseDrawingHandler drawingHandler;
 	private GECursorManager cursorManager;
 	private boolean updated;
+	
+	private GEClipBoard clipboard;
+	private GEStack stack;
 	
 	public GEDrawingPanel() {
 		super();
@@ -50,6 +56,8 @@ public class GEDrawingPanel extends JPanel{
 		this.addMouseMotionListener(drawingHandler);
 		this.setBackground(GEConstants.BACKGROUND_COLOR);
 		this.setForeground(GEConstants.FOREGROUND_COLOR);
+		clipboard = new GEClipBoard();
+		stack = new GEStack();
 		updated = false;
 	}
 	
@@ -118,6 +126,81 @@ public class GEDrawingPanel extends JPanel{
 	public void setCurrentState(EState currentState){
 		this.currentState = currentState;
 	}
+	
+	
+	public void group(GEGroup group){   ///////
+		boolean check = false;
+		for(int i = shapeList.size(); i>0 ; i--){
+			GEShape shape = shapeList.get(i-1);
+			if(shape.isSelected()){
+				shape.setSelected(false);
+				group.addShape(shape);
+				shapeList.remove(shape);
+				check = true;
+			}
+		}
+		if(check){
+			group.setSelected(true);
+			shapeList.add(group);
+			stack.push(shapeList);
+			
+		}
+		repaint();
+	}
+	
+	public void unGroup(){       
+		ArrayList<GEShape> tempList = new ArrayList<GEShape>();
+		
+		for(int i = shapeList.size() ; i>0 ;i--){
+			GEShape shape = shapeList.get(i-1);
+			if(shape instanceof GEGroup && shape.isSelected()){
+				for(GEShape childShape : ((GEGroup)shape).getChildList()){
+					childShape.setSelected(true);
+					tempList.add(childShape);
+				}
+				shapeList.remove(shape);
+			}
+		}
+		shapeList.addAll(tempList);
+		stack.push(shapeList);
+		repaint();
+	}
+	
+	//paste
+	public void paste(){
+		for(GEShape shape: clipboard.paste()){ //붙이려고 하는 도형.
+			shapeList.add(shape.deepCopy());
+		}
+		stack.push(shapeList);
+		repaint();
+	}
+	
+	//copy
+	public void copy(){
+		clipboard.copy(shapeList);
+		stack.push(shapeList);
+		
+	}
+	
+	public void cut(){
+		clipboard.cut(shapeList);
+		stack.push(shapeList);
+		repaint();
+	}
+	
+	public void delete(){
+		for(int i = shapeList.size(); i > 0 ; i--){
+			GEShape shape = shapeList.get(i-1);
+			if(shape.isSelected()){
+				shape.setSelected(false);
+				shapeList.remove(shape);
+			}
+		}
+		stack.push(shapeList);
+		repaint();
+	}
+	
+	
 	
 	private class MouseDrawingHandler extends MouseAdapter{
 		@Override

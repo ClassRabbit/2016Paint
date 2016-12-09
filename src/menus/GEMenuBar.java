@@ -6,9 +6,9 @@ import constants.GEConstants;
 import frames.GEDrawingPanel;
 
 public class GEMenuBar extends JMenuBar{
-	GEMenuFile menuFile;
-	GEMenuEdit menuEdit;
-	GEMenuColor menuColor;
+	private GEMenuFile menuFile;
+	private GEMenuEdit menuEdit;
+	private GEMenuColor menuColor;
 	public GEMenuBar() {
 		super();
 		menuFile = new GEMenuFile(GEConstants.TITLE_FILEMENU);
@@ -21,5 +21,6 @@ public class GEMenuBar extends JMenuBar{
 	
 	public void init(GEDrawingPanel drawingPanel){
 		menuColor.init(drawingPanel);
+		menuEdit.init(drawingPanel);
 	}
 }
