@@ -42,7 +42,7 @@ public class GEMenuEdit extends JMenu{
 				drawingPanel.unGroup(); 
 				break;
 			case Redo : 
-				
+				drawingPanel.redo();
 				break;
 			case Undo : 
 				drawingPanel.undo();

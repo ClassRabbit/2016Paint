@@ -28,7 +28,7 @@ import transformer.GERotater;
 import transformer.GETransformer;
 import utils.GEClipBoard;
 import utils.GECursorManager;
-import utils.GEStack;
+import utils.GEHistory;
 
 public class GEDrawingPanel extends JPanel{
 	
@@ -41,7 +41,7 @@ public class GEDrawingPanel extends JPanel{
 	private GECursorManager cursorManager;
 	
 	private GEClipBoard clipboard;
-	private GEStack history;
+	private GEHistory history;
 	
 	public GEDrawingPanel() {
 		super();
@@ -56,7 +56,7 @@ public class GEDrawingPanel extends JPanel{
 		this.setBackground(GEConstants.BACKGROUND_COLOR);
 		this.setForeground(GEConstants.FOREGROUND_COLOR);
 		clipboard = new GEClipBoard();
-		history = new GEStack();
+		history = new GEHistory();
 	}
 	
 	@Override
@@ -71,6 +71,7 @@ public class GEDrawingPanel extends JPanel{
 	public void setFillColor(Color fillColor) {
 		if(selectedShape != null){
 			selectedShape.setFillColor(fillColor);
+			history.push(shapeList);
 			repaint();
 		} else{
 			this.fillColor = fillColor;
@@ -80,6 +81,7 @@ public class GEDrawingPanel extends JPanel{
 	public void setLineColor(Color lineColor) {
 		if(selectedShape != null){
 			selectedShape.setLineColor(lineColor);
+			history.push(shapeList);
 			repaint();
 		} else{
 			this.lineColor = lineColor;
@@ -199,8 +201,14 @@ public class GEDrawingPanel extends JPanel{
 	}
 	
 	public void undo(){
-//		int layerNum = stack.getLayerNum();
 		shapeList = history.undo();
+		selectedShape = null;
+		repaint();
+	}
+	
+	public void redo(){
+		shapeList = history.redo();
+		selectedShape = null;
 		repaint();
 	}
 	
@@ -209,6 +217,9 @@ public class GEDrawingPanel extends JPanel{
 		public void mouseDragged(MouseEvent e) {
 			if(currentState !=EState.Idle){
 				transformer.transformer((Graphics2D)getGraphics(), e.getPoint());
+				if(transformer instanceof GEMover){
+					((GEMover)transformer).setMove(true);
+				}
 			}
 		}
 	
@@ -267,7 +278,9 @@ public class GEDrawingPanel extends JPanel{
 			}else if(currentState == EState.Selecting){
 				((GEGrouper)transformer).finalize(shapeList);
 			}else if(currentState == EState.Moving){
-				history.push(shapeList);
+				if(((GEMover)transformer).isMoved()){
+					history.push(shapeList);
+				}
 			}
 			currentState = EState.Idle;
 			repaint();
