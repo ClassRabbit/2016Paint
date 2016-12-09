@@ -14,7 +14,7 @@ import utils.GEAnchorList;
 
 public abstract class GEShape {
 	protected Point startP;
-	protected Shape shape;
+	protected Shape myShape;
 	protected Color lineColor, fillColor;
 	protected boolean selected;
 	protected GEAnchorList anchorList;
@@ -22,7 +22,7 @@ public abstract class GEShape {
 	protected AffineTransform affineTransform;
 	
 	public GEShape(Shape shape){
-		this.shape = shape;
+		this.myShape = shape;
 		anchorList = null;
 		selected = false;
 		affineTransform = new AffineTransform();
@@ -41,7 +41,7 @@ public abstract class GEShape {
 	}
 	
 	public Rectangle getBounds(){
-		return shape.getBounds();
+		return myShape.getBounds();
 	}
 	
 	public EAnchorTypes onAnchor(Point p){
@@ -61,7 +61,7 @@ public abstract class GEShape {
 		this.selected = selected;
 		if(selected == true){
 			anchorList = new GEAnchorList();
-			anchorList.setPosition(shape.getBounds());
+			anchorList.setPosition(myShape.getBounds());
 		} 
 		else {
 			anchorList = null;
@@ -69,51 +69,90 @@ public abstract class GEShape {
 	}
 	
 	public boolean onShape(Point p){
-		if(anchorList != null){		//선택된 상태 
+		if(anchorList != null){		
 			selectedAnchor = anchorList.onAnchors(p);
 			if(selectedAnchor != GEConstants.EAnchorTypes.NONE){
 				return true;
 			}
 		}
-		return shape.intersects(p.x, p.y, 2 ,2);
+		return myShape.intersects(p.x, p.y, 2 ,2);
 	}
 	
 	public void draw(Graphics2D g2d){
 		if(fillColor != null){
 			g2d.setColor(fillColor);
-			g2d.fill(shape);
+			g2d.fill(myShape);
 		}
 		if(lineColor != null){
 			g2d.setColor(lineColor);
-			g2d.draw(shape);
+			g2d.draw(myShape);
 		}
 		if(selected){
-			anchorList.setPosition(shape.getBounds());
+			anchorList.setPosition(myShape.getBounds());
 			anchorList.draw(g2d);
 		}
 	}
 	
+	protected void setShape(Shape shape){
+		myShape = shape;
+	}
+	
+	public void setGraphicsAttributes(GEShape shape){
+		setLineColor(shape.getLineColor());
+		setFillColor(shape.getFillColor());
+		setAnchorList(shape.getAnchorList());
+		setAnchorList(shape.getAnchorList());
+		setSelected(shape.isSelected());	
+	}
+	
+	public Color getLineColor(){
+		return lineColor;
+	}
+	
+	public Color getFillColor(){
+		return fillColor;
+	}
+	
+	public void setAnchorList(GEAnchorList anchorList){
+		this.anchorList = anchorList;
+	}
+	
 	public void move(Point resizeAnchor){
 		affineTransform.setToTranslation(resizeAnchor.x, resizeAnchor.y);
-		shape = affineTransform.createTransformedShape(shape);
+		myShape = affineTransform.createTransformedShape(myShape);
 	}
 	
 	public void moveReverse(Point resizeAnchor){
 		affineTransform.setToTranslation(-resizeAnchor.x, -resizeAnchor.y);
-		shape = affineTransform.createTransformedShape(shape);
+		myShape = affineTransform.createTransformedShape(myShape);
 	}
 	
 	public void resizeCoordinate(Point2D resizeFactor){
 		affineTransform.setToScale(resizeFactor.getX(), resizeFactor.getY());
-		shape= affineTransform.createTransformedShape(shape);
+		myShape= affineTransform.createTransformedShape(myShape);
 	}
 	
 	public void moveCoordinate(Point moveP){
 		affineTransform.setToTranslation(moveP.x, moveP.y);
-		shape = affineTransform.createTransformedShape(shape);
+		myShape = affineTransform.createTransformedShape(myShape);
+	}
+	
+	public void moveReverse(Point2D resizeAnchor){
+		affineTransform.setToTranslation(-resizeAnchor.getX(), -resizeAnchor.getY());
+		myShape = affineTransform.createTransformedShape(myShape);
+	}
+	public void rotaterCoordinate(double theta, Point2D rotaterAnchor){
+		affineTransform.setToRotation(theta, rotaterAnchor.getX(), rotaterAnchor.getY() );
+		myShape = affineTransform.createTransformedShape(myShape);
+		
+	}
+	public void move(Point2D resizeAnchor){
+		affineTransform.setToTranslation(resizeAnchor.getX(), resizeAnchor.getY());
+		myShape = affineTransform.createTransformedShape(myShape);
 	}
 	
 	abstract public void initDraw(Point startP);
 	abstract public void setCoordinate(Point currentP);
 	abstract public GEShape clone();
+	abstract public GEShape deepCopy();
 }

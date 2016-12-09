@@ -6,7 +6,7 @@ public class GEConstants {
 	//GEMainFrame
 		public static final int WIDTH_MAINFRAME = 400;
 		public static final int HEIGHT_MAINFRAME = 600;
-		public static final String TITLE_MAINFRAME = "GraphicEditor11";
+		public static final String TITLE_MAINFRAME = "함박산";
 
 		//GEMenu
 		public static final String TITLE_FILEMENU = "파일";
@@ -30,7 +30,7 @@ public class GEConstants {
 		public static final Color BACKGROUND_COLOR = Color.white;
 		public static final Color LINE_COLOR_DEFAULT = Color.black;
 		public static final Color FILL_COLOR_DEFAULT = Color.white;
-		public static enum EState {Idle, TwoPointsDrawing, NPointsDrawing, Moving, Resizing}
+		public static enum EState {Idle, TwoPointsDrawing, NPointsDrawing, Moving, Resizing, Selecting, Rotater}
 		
 		//GEAnchorList
 		public static final int ANCHOR_W = 6;

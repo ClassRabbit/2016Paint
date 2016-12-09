@@ -1,9 +1,9 @@
 package shapes;
 
 import java.awt.Point;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 public class GELine extends GEShape{
 	
@@ -18,10 +18,10 @@ public class GELine extends GEShape{
 
 	@Override
 	public void setCoordinate(Point currentP) {
-		Line2D line = (Line2D)shape;
+		Line2D line = (Line2D)myShape;
 		line.setLine(startP.x, startP.y, currentP.x, currentP.y);
 		if(anchorList != null){
-			anchorList.setPosition(shape.getBounds());
+			anchorList.setPosition(myShape.getBounds());
 		}
 	}
 
@@ -30,4 +30,12 @@ public class GELine extends GEShape{
 		return new GELine();
 	}
 
+	public GEShape deepCopy(){
+		AffineTransform affineTransform = new AffineTransform();
+		Shape newShape = affineTransform.createTransformedShape(myShape);
+		GELine shape = new GELine();
+		shape.setShape(newShape);
+		shape.setGraphicsAttributes(this);
+		return shape;
+	}
 }
