@@ -41,7 +41,7 @@ public class GEDrawingPanel extends JPanel{
 	private GECursorManager cursorManager;
 	
 	private GEClipBoard clipboard;
-	private GEStack stack;
+	private GEStack history;
 	
 	public GEDrawingPanel() {
 		super();
@@ -56,7 +56,7 @@ public class GEDrawingPanel extends JPanel{
 		this.setBackground(GEConstants.BACKGROUND_COLOR);
 		this.setForeground(GEConstants.FOREGROUND_COLOR);
 		clipboard = new GEClipBoard();
-		stack = new GEStack();
+		history = new GEStack();
 	}
 	
 	@Override
@@ -103,6 +103,7 @@ public class GEDrawingPanel extends JPanel{
 	
 	private void finishDraw(){
 		shapeList.add(currentShape);
+		history.push(shapeList);
 	}
 	
 	private GEShape onShape(Point p){
@@ -140,7 +141,7 @@ public class GEDrawingPanel extends JPanel{
 		if(check){
 			group.setSelected(true);
 			shapeList.add(group);
-			stack.push(shapeList);
+			history.push(shapeList);
 			selectedShape = group;
 		}
 		repaint();
@@ -160,7 +161,7 @@ public class GEDrawingPanel extends JPanel{
 			}
 		}
 		shapeList.addAll(tempList);
-		stack.push(shapeList);
+		history.push(shapeList);
 		repaint();
 	}
 	
@@ -169,20 +170,19 @@ public class GEDrawingPanel extends JPanel{
 		for(GEShape shape: clipboard.paste()){ //붙이려고 하는 도형.
 			shapeList.add(shape.deepCopy());
 		}
-		stack.push(shapeList);
+		history.push(shapeList);
 		repaint();
 	}
 	
 	//copy
 	public void copy(){
 		clipboard.copy(shapeList);
-		stack.push(shapeList);
 		
 	}
 	
 	public void cut(){
 		clipboard.cut(shapeList);
-		stack.push(shapeList);
+		history.push(shapeList);
 		repaint();
 	}
 	
@@ -194,11 +194,15 @@ public class GEDrawingPanel extends JPanel{
 				shapeList.remove(shape);
 			}
 		}
-		stack.push(shapeList);
+		history.push(shapeList);
 		repaint();
 	}
 	
-	
+	public void undo(){
+//		int layerNum = stack.getLayerNum();
+		shapeList = history.undo();
+		repaint();
+	}
 	
 	private class MouseDrawingHandler extends MouseAdapter{
 		@Override
@@ -262,6 +266,8 @@ public class GEDrawingPanel extends JPanel{
 				finishDraw();
 			}else if(currentState == EState.Selecting){
 				((GEGrouper)transformer).finalize(shapeList);
+			}else if(currentState == EState.Moving){
+				history.push(shapeList);
 			}
 			currentState = EState.Idle;
 			repaint();

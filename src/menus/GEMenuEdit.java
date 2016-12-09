@@ -35,14 +35,30 @@ public class GEMenuEdit extends JMenu{
 	private class EditMenuHandler implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			switch(EEditMenuItems.valueOf(e.getActionCommand())){
-			case Group : drawingPanel.group(new GEGroup()); break;
-			case Ungroup : drawingPanel.unGroup(); break;
-			case Redo : break;
-			case Undo : break;
-			case 복사 : drawingPanel.copy(); break;
-			case 붙이기 : drawingPanel.paste();break;
-			case 삭제 : drawingPanel.delete(); break;
-			case 잘라내기 : drawingPanel.cut(); break;
+			case Group : 
+				drawingPanel.group(new GEGroup()); 
+				break;
+			case Ungroup : 
+				drawingPanel.unGroup(); 
+				break;
+			case Redo : 
+				
+				break;
+			case Undo : 
+				drawingPanel.undo();
+				break;
+			case 복사 : 
+				drawingPanel.copy(); 
+				break;
+			case 붙이기 : 
+				drawingPanel.paste();
+				break;
+			case 삭제 : 
+				drawingPanel.delete(); 
+				break;
+			case 잘라내기 : 
+				drawingPanel.cut(); 
+				break;
 			}
 		}
 	}
