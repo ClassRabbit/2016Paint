@@ -17,10 +17,13 @@ import constants.GEConstants.EAnchorTypes;
 import constants.GEConstants.EState;
 import shapes.GEPolygon;
 import shapes.GERectangle;
+import shapes.GESelect;
 import shapes.GEShape;
 import transformer.GEDrawer;
+import transformer.GEGrouper;
 import transformer.GEMover;
 import transformer.GEResizer;
+import transformer.GERotater;
 import transformer.GETransformer;
 import utils.GECursorManager;
 
@@ -33,6 +36,7 @@ public class GEDrawingPanel extends JPanel{
 	private Color fillColor, lineColor;
 	private MouseDrawingHandler drawingHandler;
 	private GECursorManager cursorManager;
+	private boolean updated;
 	
 	public GEDrawingPanel() {
 		super();
@@ -46,6 +50,7 @@ public class GEDrawingPanel extends JPanel{
 		this.addMouseMotionListener(drawingHandler);
 		this.setBackground(GEConstants.BACKGROUND_COLOR);
 		this.setForeground(GEConstants.FOREGROUND_COLOR);
+		updated = false;
 	}
 	
 	@Override
@@ -109,68 +114,88 @@ public class GEDrawingPanel extends JPanel{
 			shape.setSelected(false);
 		}
 	}
+	
+	public void setCurrentState(EState currentState){
+		this.currentState = currentState;
+	}
+	
 	private class MouseDrawingHandler extends MouseAdapter{
-		
 		@Override
-		public void mouseDragged(MouseEvent e){
-			if(currentState != EState.Idle){
+		public void mouseDragged(MouseEvent e) {
+			if(currentState !=EState.Idle){
 				transformer.transformer((Graphics2D)getGraphics(), e.getPoint());
 			}
 		}
-		
+	
 		@Override
 		public void mousePressed(MouseEvent e){
-			
 			if(currentState == EState.Idle){
-				if(currentShape != null){
-//					System.out.println("mousePressed");
+				if(currentShape instanceof GESelect){
+					selectedShape = onShape(e.getPoint());
+					if(selectedShape != null){
+						clearSelectedShapes();
+						selectedShape.setSelected(true);
+						selectedShape.onAnchor(e.getPoint());
+						if(selectedShape.getSelectedAnchor() == EAnchorTypes.NONE){
+							transformer = new GEMover(selectedShape);
+							((GEMover)transformer).init(e.getPoint());
+							setCurrentState(EState.Moving);
+						}else if(selectedShape.getSelectedAnchor() == EAnchorTypes.RR){ //회전일때 생성.
+							transformer = new GERotater(selectedShape);
+							((GERotater)transformer).init(e.getPoint());
+							setCurrentState(EState.Rotater);
+						}else{
+							transformer  = new GEResizer(selectedShape);
+							((GEResizer)transformer).init(e.getPoint());
+							setCurrentState(EState.Resizing);
+						}
+					}else{
+						setCurrentState(EState.Selecting);
+						clearSelectedShapes();
+						initDraw(e.getPoint());
+						transformer = new GEGrouper(currentShape);
+						((GEGrouper)transformer).init(e.getPoint());
+					}
+				}else{
+					clearSelectedShapes();
 					initDraw(e.getPoint());
 					transformer = new GEDrawer(currentShape);
-					transformer.init(e.getPoint());
+					((GEDrawer)transformer).init(e.getPoint());
 					if(currentShape instanceof GEPolygon){
-						currentState = EState.NPointsDrawing;
-					}else {
-						currentState = EState.TwoPointsDrawing;
-					}
-				} else{
-//					System.out.println("mousePressed null");
-					selectedShape = onShape(e.getPoint());
-					clearSelectedShapes();
-					if(selectedShape != null){
-						selectedShape.setSelected(true);
-						if(selectedShape.onAnchor(e.getPoint()) == EAnchorTypes.NONE){
-							transformer = new GEMover(selectedShape);
-							currentState = EState.Moving;
-						} else{
-							transformer = new GEResizer(selectedShape);
-							currentState = EState.Resizing;
-						}
-						transformer.init(e.getPoint());
+						setCurrentState(EState.NPointsDrawing);
+					}else{
+						setCurrentState(EState.TwoPointsDrawing);
 					}
 				}
 			}
 		}
 		
+		
 		@Override
-		public void mouseReleased(MouseEvent e){
+		public void mouseReleased(MouseEvent e) {
 			if(currentState == EState.TwoPointsDrawing){
 				finishDraw();
-			} else if(currentState == EState.NPointsDrawing){
+				updated = true;
+			}else if(currentState == EState.NPointsDrawing){
+				updated = true; //바꼈는지 안바꼈는지.
 				return;
-			} else if(currentState == EState.Resizing){
-				((GEResizer)transformer).finalize();
+			}else if(currentState == EState.Resizing){
+				finishDraw();
+				updated = true; //바꼈는지 안바꼈는지.
+			}else if(currentState == EState.Selecting){
+				((GEGrouper)transformer).finalize(shapeList);
 			}
 			currentState = EState.Idle;
 			repaint();
 		}
-		
+
 		@Override
-		public void mouseClicked(MouseEvent e){
+		public void mouseClicked(MouseEvent e) {
 			if(e.getButton() == MouseEvent.BUTTON1){
 				if(currentState == EState.NPointsDrawing){
 					if(e.getClickCount() == 1){
 						continueDraw(e.getPoint());
-					}else if(e.getClickCount() == 2){ //double click
+					}else if(e.getClickCount()==2){
 						finishDraw();
 						currentState = EState.Idle;
 						repaint();
@@ -179,15 +204,16 @@ public class GEDrawingPanel extends JPanel{
 			}
 		}
 		
+		
 		@Override
-		public void mouseMoved(MouseEvent e){
+		public void mouseMoved(MouseEvent e) {
 			if(currentState == EState.NPointsDrawing){
 				transformer.transformer((Graphics2D)getGraphics(), e.getPoint());
-			} else if(currentState == EState.Idle){
+			}else if(currentState == EState.Idle){
 				GEShape shape = onShape(e.getPoint());
 				if(shape == null){
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				} else if(shape.isSelected() == true){
+				}else if(shape.isSelected() == true){
 					EAnchorTypes anchorType = shape.onAnchor(e.getPoint());
 					setCursor(cursorManager.get(anchorType.ordinal()));
 				}
