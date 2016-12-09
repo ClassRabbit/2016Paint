@@ -95,8 +95,13 @@ public class GEDrawingPanel extends JPanel{
 
 	private void initDraw(Point startP){
 		currentShape = currentShape.clone();
-		currentShape.setFillColor(fillColor);
-		currentShape.setLineColor(lineColor);
+		if(currentShape instanceof GESelect){
+			currentShape.setLineColor(GEConstants.LINE_COLOR_DEFAULT);
+		}
+		else {
+			currentShape.setFillColor(fillColor);
+			currentShape.setLineColor(lineColor);
+		}
 	}
 	
 	private void continueDraw(Point currentP){
