@@ -39,7 +39,6 @@ public class GEDrawingPanel extends JPanel{
 	private Color fillColor, lineColor;
 	private MouseDrawingHandler drawingHandler;
 	private GECursorManager cursorManager;
-	private boolean updated;
 	
 	private GEClipBoard clipboard;
 	private GEStack stack;
@@ -58,7 +57,6 @@ public class GEDrawingPanel extends JPanel{
 		this.setForeground(GEConstants.FOREGROUND_COLOR);
 		clipboard = new GEClipBoard();
 		stack = new GEStack();
-		updated = false;
 	}
 	
 	@Override
@@ -143,7 +141,7 @@ public class GEDrawingPanel extends JPanel{
 			group.setSelected(true);
 			shapeList.add(group);
 			stack.push(shapeList);
-			
+			selectedShape = group;
 		}
 		repaint();
 	}
@@ -258,13 +256,10 @@ public class GEDrawingPanel extends JPanel{
 		public void mouseReleased(MouseEvent e) {
 			if(currentState == EState.TwoPointsDrawing){
 				finishDraw();
-				updated = true;
 			}else if(currentState == EState.NPointsDrawing){
-				updated = true; //바꼈는지 안바꼈는지.
 				return;
 			}else if(currentState == EState.Resizing){
 				finishDraw();
-				updated = true; //바꼈는지 안바꼈는지.
 			}else if(currentState == EState.Selecting){
 				((GEGrouper)transformer).finalize(shapeList);
 			}

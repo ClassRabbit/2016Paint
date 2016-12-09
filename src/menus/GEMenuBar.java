@@ -6,21 +6,21 @@ import constants.GEConstants;
 import frames.GEDrawingPanel;
 
 public class GEMenuBar extends JMenuBar{
-	private GEMenuFile menuFile;
-	private GEMenuEdit menuEdit;
-	private GEMenuColor menuColor;
+	private GEMenuFile fileMenu;
+	private GEMenuEdit editMenu;
+	private GEMenuColor colorMenu;
 	public GEMenuBar() {
 		super();
-		menuFile = new GEMenuFile(GEConstants.TITLE_FILEMENU);
-		menuEdit = new GEMenuEdit(GEConstants.TITLE_EDITMENU);
-		menuColor = new GEMenuColor(GEConstants.TITLE_COLORMENU);
-		this.add(menuFile);
-		this.add(menuEdit);
-		this.add(menuColor);
+		fileMenu = new GEMenuFile(GEConstants.TITLE_FILEMENU);
+		editMenu = new GEMenuEdit(GEConstants.TITLE_EDITMENU);
+		colorMenu = new GEMenuColor(GEConstants.TITLE_COLORMENU);
+		this.add(fileMenu);
+		this.add(editMenu);
+		this.add(colorMenu);
 	}
 	
 	public void init(GEDrawingPanel drawingPanel){
-		menuColor.init(drawingPanel);
-		menuEdit.init(drawingPanel);
+		colorMenu.init(drawingPanel);
+		editMenu.init(drawingPanel);
 	}
 }
