@@ -157,8 +157,8 @@ public class GEDrawingPanel extends JPanel{
 	public void unGroup(){       
 		ArrayList<GEShape> tempList = new ArrayList<GEShape>();
 		
-		for(int i = shapeList.size() ; i>0 ;i--){
-			GEShape shape = shapeList.get(i-1);
+		for(int i = 0 ; i<shapeList.size() ;i++){
+			GEShape shape = shapeList.get(i);
 			if(shape instanceof GEGroup && shape.isSelected()){
 				for(GEShape childShape : ((GEGroup)shape).getChildList()){
 					childShape.setSelected(true);
