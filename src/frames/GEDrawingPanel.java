@@ -6,8 +6,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.TextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -28,8 +30,11 @@ import transformer.GETransformer;
 import utils.GEClipBoard;
 import utils.GECursorManager;
 import utils.GEHistory;
+import utils.GETextRotater;
 
 public class GEDrawingPanel extends JPanel{
+	
+	private GEDrawingPanel instance;
 	
 	private GEShape currentShape, selectedShape;
 	private EState currentState;
@@ -41,9 +46,11 @@ public class GEDrawingPanel extends JPanel{
 	
 	private GEClipBoard clipboard;
 	private GEHistory history;
+	private GETextRotater textRotater;
 	
 	public GEDrawingPanel() {
 		super();
+		instance = this;
 		cursorManager = new GECursorManager();
 		currentState = EState.Idle;
 		shapeList = new ArrayList<GEShape>();
@@ -230,6 +237,13 @@ public class GEDrawingPanel extends JPanel{
 		repaint();
 	}
 	
+	public void freshTextRotater(){
+		if(textRotater != null){
+			remove(textRotater.getTextField());
+			textRotater = null;
+		}
+	}
+	
 	private class MouseDrawingHandler extends MouseAdapter{
 		@Override
 		public void mouseDragged(MouseEvent e) {
@@ -245,6 +259,7 @@ public class GEDrawingPanel extends JPanel{
 	
 		@Override
 		public void mousePressed(MouseEvent e){
+			freshTextRotater();
 			if(currentState == EState.Idle){
 				if(currentShape instanceof GESelect){
 					selectedShape = onShape(e.getPoint());
@@ -305,6 +320,12 @@ public class GEDrawingPanel extends JPanel{
 			}else if(currentState == EState.Rotater){
 				if(((GERotater)transformer).isMoved()){
 					history.push(shapeList);
+				} else{
+					System.out.println("로테이션 클릭");
+					textRotater = new GETextRotater();
+					textRotater.init(selectedShape, instance);
+					add(textRotater.getTextField());
+					textRotater.requestFocus();
 				}
 			}
 			currentState = EState.Idle;
