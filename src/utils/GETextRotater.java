@@ -54,11 +54,18 @@ public class GETextRotater {
 			if(e.getKeyCode() == KeyEvent.VK_ENTER){
 				System.out.println("엔터누름");
 				if(!textField.getText() .equals("")){
-					double delta = Math.toRadians(Double.parseDouble(textField.getText()));
-					Point2D.Double ROrigin = new Point2D.Double(shape.getBounds().getCenterX(), shape.getBounds().getCenterY());
-					shape.rotaterCoordinate(delta, ROrigin);
-					drawingPanel.freshTextRotater();
-					drawingPanel.repaint();
+					try{
+						double delta = Math.toRadians(Double.parseDouble(textField.getText()));
+						Point2D.Double ROrigin = new Point2D.Double(shape.getBounds().getCenterX(), shape.getBounds().getCenterY());
+						shape.rotaterCoordinate(delta, ROrigin);
+						drawingPanel.freshTextRotater();
+						drawingPanel.repaint();
+					}
+					catch(Exception ex)
+					{
+						System.out.println(ex.toString());
+					}
+					
 				}
 			}
 			
@@ -77,8 +84,8 @@ public class GETextRotater {
 			  char c = e.getKeyChar();
 			  
 			  if (!Character.isDigit(c)) {
-			   e.consume();
-			   return;
+				   e.consume();
+				   return;
 			  }
 		}
 
