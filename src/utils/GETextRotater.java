@@ -60,6 +60,7 @@ public class GETextRotater {
 						shape.rotaterCoordinate(delta, ROrigin);
 						drawingPanel.freshTextRotater();
 						drawingPanel.repaint();
+						drawingPanel.addHistory();
 					}
 					catch(Exception ex)
 					{

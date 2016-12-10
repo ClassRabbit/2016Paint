@@ -77,7 +77,7 @@ public class GEDrawingPanel extends JPanel{
 	public void setFillColor(Color fillColor) {
 		if(selectedShape != null){
 			selectedShape.setFillColor(fillColor);
-			history.push(shapeList);
+			addHistory();
 			repaint();
 		} else{
 			this.fillColor = fillColor;
@@ -87,7 +87,7 @@ public class GEDrawingPanel extends JPanel{
 	public void setLineColor(Color lineColor) {
 		if(selectedShape != null){
 			selectedShape.setLineColor(lineColor);
-			history.push(shapeList);
+			addHistory();
 			repaint();
 		} else{
 			this.lineColor = lineColor;
@@ -116,7 +116,7 @@ public class GEDrawingPanel extends JPanel{
 	
 	private void finishDraw(){
 		shapeList.add(currentShape);
-		history.push(shapeList);
+		addHistory();
 	}
 	
 	private GEShape onShape(Point p){
@@ -137,6 +137,10 @@ public class GEDrawingPanel extends JPanel{
 	
 	public void setCurrentState(EState currentState){
 		this.currentState = currentState;
+	}
+	
+	public void addHistory(){
+		history.push(shapeList);
 	}
 	
 	
@@ -197,7 +201,7 @@ public class GEDrawingPanel extends JPanel{
 //		for(GEShape shape: clipboard.paste()){ //붙이려고 하는 도형.
 //			shapeList.add(shape.deepCopy());
 //		}
-		history.push(shapeList);
+		addHistory();
 		repaint();
 	}
 	
@@ -209,7 +213,7 @@ public class GEDrawingPanel extends JPanel{
 	
 	public void cut(){
 		clipboard.cut(shapeList);
-		history.push(shapeList);
+		addHistory();
 		repaint();
 	}
 	
@@ -221,7 +225,7 @@ public class GEDrawingPanel extends JPanel{
 				shapeList.remove(shape);
 			}
 		}
-		history.push(shapeList);
+		addHistory();
 		repaint();
 	}
 	
@@ -310,16 +314,16 @@ public class GEDrawingPanel extends JPanel{
 				return;
 			}else if(currentState == EState.Resizing){
 				((GEResizer)transformer).finalize();
-				history.push(shapeList);
+				addHistory();
 			}else if(currentState == EState.Selecting){
 				((GEGrouper)transformer).finalize(shapeList);
 			}else if(currentState == EState.Moving){
 				if(((GEMover)transformer).isMoved()){
-					history.push(shapeList);
+					addHistory();
 				}
 			}else if(currentState == EState.Rotater){
 				if(((GERotater)transformer).isMoved()){
-					history.push(shapeList);
+					addHistory();
 				} else{
 					System.out.println("로테이션 클릭");
 					textRotater = new GETextRotater();
