@@ -67,6 +67,7 @@ public class GEResizer extends GETransformer {
 		resizeAnchor.setLocation(tempAnchor.x, tempAnchor.y);
 		return resizeAnchor;
 	}
+	
 	private Point2D.Double computeResizeFactor(Point previousP, Point currentP){
 		double deltaW = 0;
 		double deltaH = 0;

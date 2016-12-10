@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-import shapes.GEGroup;
 import shapes.GEShape;
 
 
@@ -16,12 +15,6 @@ public class GERotater extends GETransformer{
 
 	public GERotater(GEShape shape) {
 		super(shape);
-		if(shape instanceof GEGroup){
-			shapelist = new ArrayList<GEShape>();
-			for(GEShape childshape : ((GEGroup) shape).getChildList()){
-				shapelist.add(childshape);
-			}
-		}
 	}
 
 	@Override
@@ -31,25 +24,11 @@ public class GERotater extends GETransformer{
 		g2d.setStroke(dashedLineStroke);
 		//마우스가 이동한 각도 구하기.
 		double theta2 = theta - Math.atan2(ROrigin.y- p.getY(), p.getX() - ROrigin.x);
-		if(shape instanceof GEGroup){
-			GEShape temp;
-			for(int i = 0; i < shapelist.size(); i++){
-				temp = shapelist.get(i);
-				temp.draw(g2d);
-				temp.rotaterCoordinate(theta2, ROrigin);
-				temp.draw(g2d);
-				
-			}
-		}else{
-			shape.draw(g2d);
-			shape.rotaterCoordinate(theta2, ROrigin);
-			shape.draw(g2d);
-		}
+		shape.draw(g2d);
+		shape.rotaterCoordinate(theta2, ROrigin);
+		shape.draw(g2d);
 		//AffineTransform으로 변환
 		theta = Math.atan2(ROrigin.y - p.getY(), p.getX() - ROrigin.x); // 이동한 각 저장
-		
-		
-
 	}
 	
 

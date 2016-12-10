@@ -9,7 +9,6 @@ import javax.swing.JMenuItem;
 
 import constants.GEConstants.EEditMenuItems;
 import frames.GEDrawingPanel;
-import shapes.GEGroup;
 import shapes.GEShape;
 
 public class GEMenuEdit extends JMenu{
@@ -36,10 +35,8 @@ public class GEMenuEdit extends JMenu{
 		public void actionPerformed(ActionEvent e){
 			switch(EEditMenuItems.valueOf(e.getActionCommand())){
 			case Group : 
-				drawingPanel.group(new GEGroup()); 
 				break;
 			case Ungroup : 
-				drawingPanel.unGroup(); 
 				break;
 			case Redo : 
 				drawingPanel.redo();

@@ -14,6 +14,7 @@ public class GERectangle extends GEShape{
 	public void initDraw(Point startP) {
 		this.startP = startP;
 	}
+	
 	@Override
 	public void setCoordinate(Point currentP) {
 		Rectangle rectangle = (Rectangle)myShape;

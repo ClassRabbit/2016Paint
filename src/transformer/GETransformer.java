@@ -15,7 +15,7 @@ public abstract class GETransformer {
 		this.shape = shape;
 		float dashes[] =  {GEConstants.DEFAULT_DASH_OFFSET};
 		dashedLineStroke = new BasicStroke(GEConstants.DEFAULT_DASHEDLINE_WIDTH, 
-				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, dashes, 0);
+				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10, dashes, 0);
 	}
 	
 	public abstract void init(Point p);

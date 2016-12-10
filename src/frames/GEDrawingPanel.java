@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import constants.GEConstants;
 import constants.GEConstants.EAnchorTypes;
 import constants.GEConstants.EState;
-import shapes.GEGroup;
 import shapes.GEPolygon;
 import shapes.GERectangle;
 import shapes.GESelect;
@@ -134,43 +133,53 @@ public class GEDrawingPanel extends JPanel{
 	}
 	
 	
-	public void group(GEGroup group){   ///////
-		boolean check = false;
-		for(int i = shapeList.size(); i>0 ; i--){
-			GEShape shape = shapeList.get(i-1);
-			if(shape.isSelected()){
-				shape.setSelected(false);
-				group.addShape(shape);
-				shapeList.remove(shape);
-				check = true;
-			}
-		}
-		if(check){
-			group.setSelected(true);
-			shapeList.add(group);
-			history.push(shapeList);
-			selectedShape = group;
-		}
-		repaint();
-	}
-	
-	public void unGroup(){       
-		ArrayList<GEShape> tempList = new ArrayList<GEShape>();
-		
-		for(int i = 0 ; i<shapeList.size() ;i++){
-			GEShape shape = shapeList.get(i);
-			if(shape instanceof GEGroup && shape.isSelected()){
-				for(GEShape childShape : ((GEGroup)shape).getChildList()){
-					childShape.setSelected(true);
-					tempList.add(childShape);
-				}
-				shapeList.remove(shape);
-			}
-		}
-		shapeList.addAll(tempList);
-		history.push(shapeList);
-		repaint();
-	}
+//	public void group(GEGroup group){   ///////
+//		boolean check = false;
+//		for(int i = shapeList.size(); i>0 ; i--){
+//			GEShape shape = shapeList.get(i-1);
+//			if(shape.isSelected()){
+//				shape.setSelected(false);
+//				group.addShape(shape);
+//				shapeList.remove(shape);
+//				check = true;
+//			}
+//		}
+//		if(check){
+//			group.setSelected(true);
+//			shapeList.add(group);
+//			history.push(shapeList);
+//			selectedShape = group;
+//		}
+//		repaint();
+//	}
+//	
+//	public void unGroup(){       
+//		ArrayList<GEShape> tempList = new ArrayList<GEShape>();
+//		
+////		for(int i = 0 ; i<shapeList.size() ;i++){
+////			GEShape shape = shapeList.get(i);
+////			if(shape instanceof GEGroup && shape.isSelected()){
+////				for(GEShape childShape : ((GEGroup)shape).getChildList()){
+////					childShape.setSelected(true);
+////					tempList.add(childShape);
+////				}
+////				shapeList.remove(shape);
+////			}
+////		}
+//		for(int i = shapeList.size() ; i>0 ;i--){
+//			GEShape shape = shapeList.get(i-1);
+//			if(shape instanceof GEGroup && shape.isSelected()){
+//				for(GEShape childShape : ((GEGroup)shape).getChildList()){
+//					childShape.setSelected(true);
+//					tempList.add(childShape);
+//				}
+//				shapeList.remove(shape);
+//			}
+//		}
+//		shapeList.addAll(tempList);
+//		history.push(shapeList);
+//		repaint();
+//	}
 	
 	//paste
 	public void paste(){
@@ -304,7 +313,8 @@ public class GEDrawingPanel extends JPanel{
 						continueDraw(e.getPoint());
 					}else if(e.getClickCount()==2){
 						finishDraw();
-						currentState = EState.Idle;
+						setCurrentState(EState.Idle);
+//						currentState = EState.Idle;
 						repaint();
 					}
 				}
