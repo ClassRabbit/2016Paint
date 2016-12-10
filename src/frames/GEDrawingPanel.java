@@ -237,6 +237,8 @@ public class GEDrawingPanel extends JPanel{
 				transformer.transformer((Graphics2D)getGraphics(), e.getPoint());
 				if(transformer instanceof GEMover){
 					((GEMover)transformer).setMove(true);
+				}else if(transformer instanceof GERotater){
+					((GERotater)transformer).setMove(true);
 				}
 			}
 		}
@@ -298,6 +300,10 @@ public class GEDrawingPanel extends JPanel{
 				((GEGrouper)transformer).finalize(shapeList);
 			}else if(currentState == EState.Moving){
 				if(((GEMover)transformer).isMoved()){
+					history.push(shapeList);
+				}
+			}else if(currentState == EState.Rotater){
+				if(((GERotater)transformer).isMoved()){
 					history.push(shapeList);
 				}
 			}

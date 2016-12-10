@@ -12,6 +12,7 @@ public class GERotater extends GETransformer{
 	private ArrayList<GEShape> shapelist;
 	private Point2D.Double ROrigin;
 	private double theta; //세타. 각도.
+	private boolean moved;
 
 	public GERotater(GEShape shape) {
 		super(shape);
@@ -29,6 +30,15 @@ public class GERotater extends GETransformer{
 		shape.draw(g2d);
 		//AffineTransform으로 변환
 		theta = Math.atan2(ROrigin.y - p.getY(), p.getX() - ROrigin.x); // 이동한 각 저장
+	}
+	
+	public boolean isMoved(){
+		return moved;
+	}
+	
+	public void setMove(boolean moved){
+		this.moved = moved;
+		moved = false;
 	}
 	
 
