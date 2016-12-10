@@ -47,4 +47,10 @@ public class GEConstants {
 		//GETransformer
 		public final static int DEFAULT_DASH_OFFSET = 4;
 		public final static int DEFAULT_DASHEDLINE_WIDTH = 1;
+		
+		//GETextRotater
+		public final static int TEXT_POS_X_OFFSET = 10;
+		public final static int TEXT_POS_Y_OFFSET = 5;
+		public final static int TEXT_WIDTH_LENGTH = 40;
+		public final static int TEXT_HEIGHT_LENGTH = 20;
 }

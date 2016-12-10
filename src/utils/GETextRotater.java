@@ -13,6 +13,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
 
+import constants.GEConstants;
 import constants.GEConstants.EAnchorTypes;
 import frames.GEDrawingPanel;
 import shapes.GEShape;
@@ -34,7 +35,8 @@ public class GETextRotater {
 		int x = (int)rec.getX();
 		int y = (int)rec.getY();
 		textField.addKeyListener(inputListener);
-		textField.setBounds(x + 10, y - 5, 40, 20);
+		textField.setBounds(x + GEConstants.TEXT_POS_X_OFFSET, y - GEConstants.TEXT_POS_Y_OFFSET, 
+				GEConstants.TEXT_WIDTH_LENGTH, GEConstants.TEXT_HEIGHT_LENGTH);
 	}
 	
 	public TextField getTextField(){
