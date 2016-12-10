@@ -54,8 +54,7 @@ public class GETextRotater {
 			if(e.getKeyCode() == KeyEvent.VK_ENTER){
 				System.out.println("엔터누름");
 				if(!textField.getText() .equals("")){
-					double delta = Double.parseDouble(textField.getText());
-					System.out.println(delta);
+					double delta = Math.toRadians(Double.parseDouble(textField.getText()));
 					Point2D.Double ROrigin = new Point2D.Double(shape.getBounds().getCenterX(), shape.getBounds().getCenterY());
 					shape.rotaterCoordinate(delta, ROrigin);
 					drawingPanel.freshTextRotater();
