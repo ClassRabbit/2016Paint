@@ -283,7 +283,8 @@ public class GEDrawingPanel extends JPanel{
 			}else if(currentState == EState.NPointsDrawing){
 				return;
 			}else if(currentState == EState.Resizing){
-				finishDraw();
+				((GEResizer)transformer).finalize();
+				history.push(shapeList);
 			}else if(currentState == EState.Selecting){
 				((GEGrouper)transformer).finalize(shapeList);
 			}else if(currentState == EState.Moving){
