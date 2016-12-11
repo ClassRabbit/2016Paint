@@ -143,64 +143,12 @@ public class GEDrawingPanel extends JPanel{
 		history.push(shapeList);
 	}
 	
-	
-//	public void group(GEGroup group){   ///////
-//		boolean check = false;
-//		for(int i = shapeList.size(); i>0 ; i--){
-//			GEShape shape = shapeList.get(i-1);
-//			if(shape.isSelected()){
-//				shape.setSelected(false);
-//				group.addShape(shape);
-//				shapeList.remove(shape);
-//				check = true;
-//			}
-//		}
-//		if(check){
-//			group.setSelected(true);
-//			shapeList.add(group);
-//			history.push(shapeList);
-//			selectedShape = group;
-//		}
-//		repaint();
-//	}
-//	
-//	public void unGroup(){       
-//		ArrayList<GEShape> tempList = new ArrayList<GEShape>();
-//		
-////		for(int i = 0 ; i<shapeList.size() ;i++){
-////			GEShape shape = shapeList.get(i);
-////			if(shape instanceof GEGroup && shape.isSelected()){
-////				for(GEShape childShape : ((GEGroup)shape).getChildList()){
-////					childShape.setSelected(true);
-////					tempList.add(childShape);
-////				}
-////				shapeList.remove(shape);
-////			}
-////		}
-//		for(int i = shapeList.size() ; i>0 ;i--){
-//			GEShape shape = shapeList.get(i-1);
-//			if(shape instanceof GEGroup && shape.isSelected()){
-//				for(GEShape childShape : ((GEGroup)shape).getChildList()){
-//					childShape.setSelected(true);
-//					tempList.add(childShape);
-//				}
-//				shapeList.remove(shape);
-//			}
-//		}
-//		shapeList.addAll(tempList);
-//		history.push(shapeList);
-//		repaint();
-//	}
-	
 	//paste
 	public void paste(){
 		ArrayList<GEShape> pasteShapes = clipboard.paste();
 		for(int i=pasteShapes.size()-1; i>=0; i--){
 			shapeList.add(pasteShapes.get(i).deepCopy());
 		}
-//		for(GEShape shape: clipboard.paste()){ //붙이려고 하는 도형.
-//			shapeList.add(shape.deepCopy());
-//		}
 		addHistory();
 		repaint();
 	}
@@ -345,7 +293,6 @@ public class GEDrawingPanel extends JPanel{
 					}else if(e.getClickCount()==2){
 						finishDraw();
 						setCurrentState(EState.Idle);
-//						currentState = EState.Idle;
 						repaint();
 					}
 				}

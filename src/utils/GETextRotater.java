@@ -81,7 +81,6 @@ public class GETextRotater {
 		@Override
 		public void keyTyped(KeyEvent e) {
 			// TODO Auto-generated method stub
-			// Get the current character you typed...
 			  char c = e.getKeyChar();
 			  
 			  if (!Character.isDigit(c)) {

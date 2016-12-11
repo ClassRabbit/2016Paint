@@ -14,10 +14,8 @@ public class GEHistory {
 		layerNum = 0;
 	}
 	
-	//스택에 넣기.
+
 	public void push(ArrayList<GEShape> shapeList){
-		//임시 어레이 리스트 생성.
-		//
 		System.out.println("history push");
 		
 		ArrayList<GEShape> temp = new ArrayList<GEShape>();
