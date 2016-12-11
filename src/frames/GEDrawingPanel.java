@@ -226,7 +226,7 @@ public class GEDrawingPanel extends JPanel{
 						}else if(selectedShape.getSelectedAnchor() == EAnchorTypes.RR){ //회전일때 생성.
 							transformer = new GERotater(selectedShape);
 							((GERotater)transformer).init(e.getPoint());
-							setCurrentState(EState.Rotater);
+							setCurrentState(EState.Rotating);
 						}else{
 							transformer  = new GEResizer(selectedShape);
 							((GEResizer)transformer).init(e.getPoint());
@@ -269,7 +269,7 @@ public class GEDrawingPanel extends JPanel{
 				if(((GEMover)transformer).isMoved()){
 					addHistory();
 				}
-			}else if(currentState == EState.Rotater){
+			}else if(currentState == EState.Rotating){
 				if(((GERotater)transformer).isMoved()){
 					addHistory();
 				} else{

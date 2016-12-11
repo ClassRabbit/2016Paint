@@ -30,7 +30,7 @@ public class GEConstants {
 		public static final Color BACKGROUND_COLOR = Color.white;
 		public static final Color LINE_COLOR_DEFAULT = Color.black;
 		public static final Color FILL_COLOR_DEFAULT = Color.white;
-		public static enum EState {Idle, TwoPointsDrawing, NPointsDrawing, Moving, Resizing, Selecting, Rotater}
+		public static enum EState {Idle, TwoPointsDrawing, NPointsDrawing, Moving, Resizing, Selecting, Rotating}
 		
 		//GEAnchorList
 		public static final int ANCHOR_W = 6;
