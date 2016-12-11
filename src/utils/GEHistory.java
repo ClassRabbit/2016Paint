@@ -37,17 +37,18 @@ public class GEHistory {
 	
 	public ArrayList<GEShape> undo(){
 		if(0 > layerNum-1){
-			System.out.println("앞기록 없음");
+			System.out.println("undo error");
+//			System.out.println("앞기록 없음");
 			return new ArrayList<GEShape>();
 		}
 		layerNum = layerNum-1;
 		System.out.println("history size : " + history.size() + ", num : " + layerNum);
 		if(layerNum == 0){
-			System.out.println("0 이다");
+//			System.out.println("0 이다");
 			return new ArrayList<GEShape>();
 		}
 		else {
-			System.out.println("뒤로 돌아감");
+//			System.out.println("뒤로 돌아감");
 			return history.get(layerNum-1);
 		}
 	}
@@ -56,15 +57,15 @@ public class GEHistory {
 		if(history.size() < layerNum+1){
 			System.out.println("redo error");
 			if(history.size() == 0){
-				System.out.println("hostory가0이다");
+//				System.out.println("hostory가0이다");
 				return new ArrayList<GEShape>();
 			}
 			else {
-				System.out.println("마지막전송");
+//				System.out.println("마지막전송");
 				return history.get(layerNum - 1);
 			}
 		}
-		System.out.println("중간전송");
+//		System.out.println("중간전송");
 		layerNum = layerNum+1;
 		System.out.println("history size : " + history.size() + ", num : " + layerNum);
 		return history.get(layerNum-1);
