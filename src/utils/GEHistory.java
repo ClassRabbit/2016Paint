@@ -47,11 +47,17 @@ public class GEHistory {
 		}
 		else {
 //			System.out.println("뒤로 돌아감");
-			return history.get(layerNum-1);
+			ArrayList<GEShape> temp = new ArrayList<GEShape>();
+			ArrayList<GEShape> base = history.get(layerNum - 1); 
+			for(int i =0; i<base.size(); i++){
+				temp.add(base.get(i).deepCopy());
+			}
+			return temp;
 		}
 	}
 	
 	public ArrayList<GEShape> redo(){
+		ArrayList<GEShape> temp = new ArrayList<GEShape>();
 		if(history.size() < layerNum+1){
 			System.out.println("redo error");
 			if(history.size() == 0){
@@ -60,13 +66,21 @@ public class GEHistory {
 			}
 			else {
 //				System.out.println("마지막전송");
-				return history.get(layerNum - 1);
+				ArrayList<GEShape> base = history.get(layerNum - 1); 
+				for(int i =0; i<base.size(); i++){
+					temp.add(base.get(i).deepCopy());
+				}
+				return temp;
 			}
 		}
 //		System.out.println("중간전송");
 		layerNum = layerNum+1;
 		System.out.println("history size : " + history.size() + ", num : " + layerNum);
-		return history.get(layerNum-1);
+		ArrayList<GEShape> base = history.get(layerNum - 1); 
+		for(int i =0; i<base.size(); i++){
+			temp.add(base.get(i).deepCopy());
+		}
+		return temp;
 	}
 	
 	public int getLayerNum(){
